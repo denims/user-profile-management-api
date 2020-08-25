@@ -2,6 +2,7 @@ package com.deni.web.service;
 
 import com.deni.web.domain.User;
 import com.deni.web.repository.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,9 @@ public class UserService {
 
     @Transactional
     public User saveUser(User user) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(16);
+        String encodedPassword = encoder.encode(user.getPassword());
+        user.setPassword(encodedPassword);
         return userRepository.save(user);
     }
 
